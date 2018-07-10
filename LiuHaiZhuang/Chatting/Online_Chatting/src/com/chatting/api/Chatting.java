@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.chatting.data.Group;
+import com.chatting.data.GroupList;
 import com.chatting.data.User;
 import com.chatting.data.UserList;
 import com.chatting.json.JsonParser;
@@ -58,6 +60,15 @@ public class Chatting extends HttpServlet {
 			this.doGetUserListResponse(response, userlist);
 			return ;
 		}
+		else if(operation[0].equals("getgroupuserlist")){
+			/*
+			 * 此时user写入group的名字name,ip
+			 * */
+			Group group=GroupList.getGroup(operation[1]);
+			String userlist=group.getGroupList();
+			this.doGetUserListResponse(response, userlist);
+			return ;
+		}
 		else if(operation[0].equals("logout")){
 			UserList.delete(ip);
 		}
@@ -94,27 +105,46 @@ public class Chatting extends HttpServlet {
 		else if(operation.equals("send")){
 			
 			String user1=jsonp.get("user1");
-			String []user2=jsonp.get("user2").split(":");
+			String user2full=jsonp.get("user2");
+			String []user2=user2full.split(":");
 			String Msg=jsonp.get("Msg");
-			String tmp=user1+"::"+Msg;
-			for(int i=0;i<user2.length;i++){
-				UserList.addUserMsg(user2[i],tmp);
+//			String tmp=user1+"::"+Msg;
+//			for(int i=0;i<user2.length;i++){
+//				UserList.addUserMsg(user2[i],tmp);
+//			}
+//			this.doGetAccept(response);
+			if(user2.length==1){
+				/* 单人模式 */
+				/*
+				 * 单人模式下user2只有一个值
+				 * */
+				String tmp=user1+"::"+Msg;
+				User re=UserList.getUser(user2[0]);
+				re.getMsg().setMsg(tmp);
 			}
-			this.doGetAccept(response);
-//			if(user2.length==1){
-//				/* 单人模式 */
-//				String tmp=user1+"::"+Msg;
-//				User re=UserList.getUser(user2[0]);
-//				re.getMsg().setMsg(tmp);
-//			}
-//			else{
-//				/* 多人模式 */
-//				String tmp=user1+"::"+Msg;
-//				for(int i=0;i<user2.length;i++){
-//					User re=UserList.getUser(user2[i]);
-//					re.getMsg().setMsg(tmp);
-//				}
-//			}
+			else{
+				/* 多人模式 */
+				/*
+				 * 多人模式下user2不止一个值一个群中至少三个人故多人模式时user2至少有3个
+				 * 多人模式下默认user2[0]为此条消息的发送者
+				 * */
+				String []tmpuser1=user1.split(",");
+				Group group=null;
+				if(GroupList.contain(tmpuser1[1])==false){
+					/* 不存在群 */
+					group=GroupList.Add(user2full);
+				}
+				else{
+					/* 存在 */
+					group=GroupList.getGroup(user1);
+				}
+				String tmp=group.getName()+","+group.getIp()+":"+user2[0]+Msg;
+				for(int i=0;i<user2.length;i++){
+					User re=UserList.getUser(user2[i]);
+					re.getMsg().setMsg(tmp);
+					group.addMember(re);
+				}
+			}
 		}
 		else {
 			this.doGetWrong(response);

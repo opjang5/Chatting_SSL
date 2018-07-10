@@ -22,4 +22,13 @@ public class GroupList {
 		}
 		return false;
 	}
+	public static Group getGroup(String group){
+		String []tmp=group.split(",");
+		for(Group value:Groups){
+			if(value.getIp().equals(tmp[1])){
+				return value;
+			}
+		}
+		return null;
+	}
 }

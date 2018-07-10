@@ -52,4 +52,19 @@ public class Group {
 			return;
 		Users.add(user);
 	}
+	public String getGroupList(){
+		String ans="";
+		int n=0;
+		for(User value:this.Users){
+			n++;
+			if(n<this.Users.size()){
+				ans=ans+value.getName()+","+value.getIp()+":";
+			}
+			else{
+				ans=ans+value.getName()+","+value.getIp();
+			}
+			
+		}
+		return ans;
+	}
 }

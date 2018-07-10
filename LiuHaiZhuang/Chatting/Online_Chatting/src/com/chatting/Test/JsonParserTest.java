@@ -16,6 +16,10 @@ public class JsonParserTest {
 		System.out.println(JsonP.get("user1"));
 		System.out.println(JsonP.get("user2"));
 		System.out.println(JsonP.get("Msg"));
+		String tmp1="opjang5";
+		String []tmp2=tmp1.split(":");
+		System.out.println(tmp2[0]);
+//		System.out.println(tmp2[1]);
 	}
 
 }
