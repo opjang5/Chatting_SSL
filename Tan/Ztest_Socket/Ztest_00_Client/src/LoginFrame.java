@@ -27,6 +27,7 @@ public class LoginFrame extends JFrame implements UpdateUiListener {
 		setSize(280, 80);
 		setVisible(true);
 	}
+	
 	class LoginListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {

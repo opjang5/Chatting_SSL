@@ -1,5 +1,6 @@
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
 
 public class SSSPT extends Thread {
@@ -36,7 +37,7 @@ public class SSSPT extends Thread {
 						}
 					}
 					if (values[0].equals("msg")) {
-						String message = "Private>>"+values[3]+" :   "+values[2];
+						String message = "*** Private >> From "+values[3]+" to "+values[1]+" :\n*** Private >> "+values[2];
 						UserMaps.dbMaps.get(values[1]).dout.writeUTF(message);
 						UserMaps.dbMaps.get(values[3]).dout.writeUTF(message);
 					}
@@ -50,6 +51,18 @@ public class SSSPT extends Thread {
 				} catch (Exception e) {
 					System.out.println("-->Server : "+socket+" is out.");
 					UserMaps.dbMaps.remove(name);
+					String list = "";
+					for(String key : UserMaps.dbMaps.keySet()){
+						list += "%"+key;
+					}
+					for (String userName : UserMaps.dbMaps.keySet()) {
+						try {
+							UserMaps.dbMaps.get(userName).dout.writeUTF("list"+list);
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
 					break;
 				}
 				Thread.sleep(1000);
