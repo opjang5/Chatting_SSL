@@ -1,7 +1,7 @@
 package com.chatting.data;
 
+import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 public class Group {
 	/* 群的ip */
@@ -9,7 +9,7 @@ public class Group {
 	/* 群的名字 */
 	private String name;
 	/* 群中的成员 */
-	public static Set<User>Users;
+	private Set<User>Users;
 	/*
 	 * op
 	 * user1
@@ -19,14 +19,14 @@ public class Group {
 	public Group(String t_ip,String t_name,String members){
 		this.ip = t_ip;
 		this.name = t_name;
-		Users = new TreeSet<User>();
+		Users = new HashSet<User>();
 		String[] member = members.split(":");
 		/* 第0个为 */
 		for(int i=1;i<member.length;i++){
 			String[] ttmp = member[i].split(",");
 			Users.add(new User(ttmp[1], ttmp[0]));
 		}
-		for(User user : Users){
+		for(User user : this.Users){
 			System.out.println(user.getName() + " : " + user.getIp());
 		}
 	}
@@ -43,14 +43,14 @@ public class Group {
 		this.name = name;
 	}
 	public boolean have(User user){
-		if(Users.contains(user))
+		if(this.Users.contains(user))
 			return true;
 		return false;
 	}
 	public void addMember(User user){
-		if(Users.contains(user))
+		if(this.Users.contains(user))
 			return;
-		Users.add(user);
+		this.Users.add(user);
 	}
 	public String getGroupList(){
 		String ans="";

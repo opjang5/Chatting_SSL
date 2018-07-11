@@ -145,6 +145,7 @@ public class Chatting extends HttpServlet {
 					group.addMember(re);
 				}
 			}
+			this.doGetAccept(response);
 		}
 		else {
 			this.doGetWrong(response);
