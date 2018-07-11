@@ -23,13 +23,14 @@ import javax.crypto.NoSuchPaddingException;
  
 public class RSAEncrypt {
 	/**
-	 * 字节数据转字符串专用集合
+	 * 	字节数据转字符串专用集合
 	 */
 	private static final char[] HEX_CHAR = { '0', '1', '2', '3', '4', '5', '6',
 			'7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
  
 	/**
-	 * 随机生成密钥对
+	 * 	随机生成密钥对
+	 * @param filePath
 	 */
 	public static void genKeyPair(String filePath) {
 		// KeyPairGenerator类用于生成公钥和私钥对，基于RSA算法生成对象
@@ -72,13 +73,13 @@ public class RSAEncrypt {
 	}
  
 	/**
-	 * 从文件中输入流中加载公钥
-	 * 
-	 * @param in
-	 *            公钥输入流
+	 *	 从文件中输入流中加载公钥
+	 * @param path
+	 * 	公钥输入流
+	 * @return
 	 * @throws Exception
-	 *             加载公钥时产生的异常
-	 */
+	 * 	加载公钥时产生的异常
+	 */	
 	public static String loadPublicKeyByFile(String path) throws Exception {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(path
@@ -98,12 +99,12 @@ public class RSAEncrypt {
 	}
  
 	/**
-	 * 从字符串中加载公钥
-	 * 
+	 * 	从字符串中加载公钥
 	 * @param publicKeyStr
-	 *            公钥数据字符串
+	 * 	公钥数据字符串
+	 * @return
 	 * @throws Exception
-	 *             加载公钥时产生的异常
+	 * 	加载公钥时产生的异常
 	 */
 	public static RSAPublicKey loadPublicKeyByStr(String publicKeyStr)
 			throws Exception {
@@ -122,11 +123,10 @@ public class RSAEncrypt {
 	}
  
 	/**
-	 * 从文件中加载私钥
-	 * 
-	 * @param keyFileName
-	 *            私钥文件名
-	 * @return 是否成功
+	 * 	从文件中加载私钥
+	 * @param path
+	 * 	私钥文件名
+	 * @return	是否成功
 	 * @throws Exception
 	 */
 	public static String loadPrivateKeyByFile(String path) throws Exception {
@@ -164,15 +164,14 @@ public class RSAEncrypt {
 	}
  
 	/**
-	 * 公钥加密过程
-	 * 
+	 * 	公钥加密过程
 	 * @param publicKey
-	 *            公钥
+	 * 	公钥
 	 * @param plainTextData
-	 *            明文数据
+	 * 	明文数据
 	 * @return
 	 * @throws Exception
-	 *             加密过程中的异常信息
+	 * 	加密过程中的异常信息
 	 */
 	public static byte[] encrypt(RSAPublicKey publicKey, byte[] plainTextData)
 			throws Exception {
@@ -202,15 +201,14 @@ public class RSAEncrypt {
 	}
  
 	/**
-	 * 私钥加密过程
-	 * 
+	 * 	私钥加密过程
 	 * @param privateKey
-	 *            私钥
+	 * 	私钥
 	 * @param plainTextData
-	 *            明文数据
+	 * 	明文数据
 	 * @return
 	 * @throws Exception
-	 *             加密过程中的异常信息
+	 * 	加密过程中的异常信息
 	 */
 	public static byte[] encrypt(RSAPrivateKey privateKey, byte[] plainTextData)
 			throws Exception {
@@ -239,15 +237,14 @@ public class RSAEncrypt {
 	}
  
 	/**
-	 * 私钥解密过程
-	 * 
+	 * 	私钥解密过程
 	 * @param privateKey
-	 *            私钥
+	 * 	私钥
 	 * @param cipherData
-	 *            密文数据
-	 * @return 明文
+	 * 	密文数据
+	 * @return	明文
 	 * @throws Exception
-	 *             解密过程中的异常信息
+	 * 	解密过程中的异常信息
 	 */
 	public static byte[] decrypt(RSAPrivateKey privateKey, byte[] cipherData)
 			throws Exception {
@@ -277,15 +274,14 @@ public class RSAEncrypt {
 	}
  
 	/**
-	 * 公钥解密过程
-	 * 
+	 * 	公钥解密过程
 	 * @param publicKey
-	 *            公钥
+	 * 	公钥
 	 * @param cipherData
-	 *            密文数据
-	 * @return 明文
+	 * 	密文数据
+	 * @return	明文
 	 * @throws Exception
-	 *             解密过程中的异常信息
+	 * 	解密过程中的异常信息
 	 */
 	public static byte[] decrypt(RSAPublicKey publicKey, byte[] cipherData)
 			throws Exception {
@@ -315,11 +311,10 @@ public class RSAEncrypt {
 	}
  
 	/**
-	 * 字节数据转十六进制字符串
 	 * 
 	 * @param data
-	 *            输入数据
-	 * @return 十六进制内容
+	 * 	输入数据
+	 * @return	十六进制内容
 	 */
 	public static String byteArrayToString(byte[] data) {
 		StringBuilder stringBuilder = new StringBuilder();
