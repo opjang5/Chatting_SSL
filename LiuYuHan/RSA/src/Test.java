@@ -1,8 +1,8 @@
 
 public class Test {
 	public static void main(String[] args) throws Exception {
-		String filepath="./";	//指定路径
-		RSAEncrypt.genKeyPair(filepath);	//生成密钥对文件
+		String filepath = "./";	//指定路径
+		RSA.genKeyPair(filepath);	//生成密钥对文件
 		//获取公钥的字符串形式
 		String pubkey =  RSA.getPubKey(filepath);
 		System.out.println(pubkey);
