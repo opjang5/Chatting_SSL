@@ -10,7 +10,7 @@ public class Test {
 		String prikey =  RSA.getPriKey(filepath);
 		System.out.println(prikey);
 		//公钥加密
-		String cipher =  RSA.pubEnrypt(pubkey,"This is plainText");
+		String cipher =  RSA.pubEncrypt(pubkey,"This is plainText");
 		System.out.println(cipher);
 		//私钥解密
 		String res =  RSA.priDecrypt(prikey, cipher);

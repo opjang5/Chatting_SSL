@@ -12,7 +12,7 @@ public class RSA {
 			return RSAEncrypt.loadPrivateKeyByFile(filepath);
 		}
 	//公钥加密
-	public static String pubEnrypt(String publickey, String plainText) throws Exception {
+	public static String pubEncrypt(String publickey, String plainText) throws Exception {
 			byte[] cipherData=RSAEncrypt.encrypt(RSAEncrypt.loadPublicKeyByStr(publickey),plainText.getBytes());	
 			String cipher=Base64.encode(cipherData);	
 			return cipher;
