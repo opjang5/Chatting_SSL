@@ -130,7 +130,25 @@ public class RSAEncrypt {
 			cipher = Cipher.getInstance("RSA");
 			// cipher= Cipher.getInstance("RSA", new BouncyCastleProvider());
 			cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-			byte[] output = cipher.doFinal(plainTextData);
+			int inputLen = plainTextData.length;
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			int offset = 0;
+			byte[] cache;
+			int i = 0;
+			//分段加密
+			while(inputLen - offset > 0){
+				if(inputLen - offset > 117){
+					cache = cipher.doFinal(plainTextData, offset,117);
+				}else{
+					cache = cipher.doFinal(plainTextData, offset, inputLen - offset);
+				}
+				out.write(cache, 0 , cache.length);
+				i++;
+				offset = i * 117;
+			}
+			
+			byte[] output = out.toByteArray();
+			out.close();
 			return output;
 		} catch (NoSuchAlgorithmException e) {
 			throw new Exception("无此加密算法");
@@ -156,7 +174,24 @@ public class RSAEncrypt {
 		try {
 			cipher = Cipher.getInstance("RSA");
 			cipher.init(Cipher.DECRYPT_MODE, publicKey);
-			byte[] output = cipher.doFinal(cipherData);
+			int inputLen = cipherData.length;
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			int offset = 0;
+			byte[] cache;
+			int i = 0;
+			//分段解密
+			while(inputLen - offset > 0){
+				if(inputLen - offset > 128){
+					cache = cipher.doFinal(cipherData, offset,128);
+				}else{
+					cache = cipher.doFinal(cipherData, offset, inputLen - offset);
+				}
+				out.write(cache, 0 , cache.length);
+				i++;
+				offset = i * 128;
+			}
+			
+			byte[] output = out.toByteArray();
 			return output;
 		} catch (NoSuchAlgorithmException e) {
 			throw new Exception("无此解密算法");
@@ -184,7 +219,25 @@ public class RSAEncrypt {
 			// 使用默认RSA
 			cipher = Cipher.getInstance("RSA");
 			cipher.init(Cipher.ENCRYPT_MODE, privateKey);
-			byte[] output = cipher.doFinal(plainTextData);
+			int inputLen = plainTextData.length;
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			int offset = 0;
+			byte[] cache;
+			int i = 0;
+			//分段加密
+			while(inputLen - offset > 0){
+				if(inputLen - offset > 117){
+					cache = cipher.doFinal(plainTextData, offset,117);
+				}else{
+					cache = cipher.doFinal(plainTextData, offset, inputLen - offset);
+				}
+				out.write(cache, 0 , cache.length);
+				i++;
+				offset = i * 117;
+			}
+			
+			byte[] output = out.toByteArray();
+			out.close();
 			return output;
 		} catch (NoSuchAlgorithmException e) {
 			throw new Exception("无此加密算法");
@@ -210,7 +263,25 @@ public class RSAEncrypt {
 		try {
 			cipher = Cipher.getInstance("RSA");
 			cipher.init(Cipher.DECRYPT_MODE, privateKey);
-			byte[] output = cipher.doFinal(cipherData);
+			int inputLen = cipherData.length;
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			int offset = 0;
+			byte[] cache;
+			int i = 0;
+			//分段解密
+			while(inputLen - offset > 0){
+				if(inputLen - offset > 128){
+					cache = cipher.doFinal(cipherData, offset,128);
+				}else{
+					cache = cipher.doFinal(cipherData, offset, inputLen - offset);
+				}
+				out.write(cache, 0 , cache.length);
+				i++;
+				offset = i * 128;
+			}
+			
+			byte[] output = out.toByteArray();
+			out.close();
 			return output;
 		} catch (NoSuchAlgorithmException e) {
 			throw new Exception("无此解密算法");
