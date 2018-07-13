@@ -7,4 +7,4 @@
 5. UserA方得到协商好的密钥：DH.Momi(B,a,p)
 6. UserB方得到协商好的密钥：DH.Momi(A,b,p)
 
-sc.sendMsg("ask@@"+userName+"@@"+name+"@@"+p+"@@"+g+"@@"+a);
+sc.sendMsg("ask@@"+userName+"@@"+name+"@@"+p+"@@"+g+"@@"+A);
