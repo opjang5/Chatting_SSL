@@ -18,16 +18,16 @@ public class RSAEncrypt {
 		}
 		// 初始化密钥对生成器
 		keyPairGen.initialize(1024,new SecureRandom());
-		// 生成一个密钥对，保存于keyPair
+		// 生成密钥对
 		KeyPair keyPair = keyPairGen.generateKeyPair();	
-		// 私钥对象
+		// 获取私钥对象
 		RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
-		// 公钥对象
+		// 获取公钥对象
 		RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
 		try {
-			// 公钥字符串
+			// 编码获得公钥字符串
 			String publicKeyString = Base64.encode(publicKey.getEncoded());
-			// 私钥字符串
+			// 编码获得私钥字符串
 			String privateKeyString = Base64.encode(privateKey.getEncoded());
 			// 将密钥对写入到文件
 			FileWriter pubfw = new FileWriter(filePath + "/publicKey.keystore");
@@ -50,8 +50,9 @@ public class RSAEncrypt {
 	//从文件中加载公钥：需要文件路径->公钥字符串
 	public static String loadPublicKeyByFile(String path) throws Exception {
 		try {
+			//公钥数据流读入
 			BufferedReader br = new BufferedReader(new FileReader(path
-					+ "/publicKey.keystore"));
+					+ "/publicKey.keystore"));	
 			String readLine = null;
 			StringBuilder sb = new StringBuilder();
 			while ((readLine = br.readLine()) != null) {
@@ -72,7 +73,7 @@ public class RSAEncrypt {
 		try {
 			byte[] buffer = Base64.decode(publicKeyStr);
 			KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-			//将base64编码后的公钥字符串转成PublicKey实例
+			//将公钥字符串转成PublicKey对象
 			X509EncodedKeySpec keySpec = new X509EncodedKeySpec(buffer);
 			return (RSAPublicKey) keyFactory.generatePublic(keySpec);
 		} catch (NoSuchAlgorithmException e) {
@@ -87,6 +88,7 @@ public class RSAEncrypt {
 	//从文件中加载私钥：需要文件路径->私钥字符串
 	public static String loadPrivateKeyByFile(String path) throws Exception {
 		try {
+			//私钥数据流读入
 			BufferedReader br = new BufferedReader(new FileReader(path
 					+ "/privateKey.keystore"));
 			String readLine = null;
@@ -107,6 +109,7 @@ public class RSAEncrypt {
 			throws Exception {
 		try {
 			byte[] buffer = Base64.decode(privateKeyStr);
+			//将私钥字符串转成PrivateKey对象
 			PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(buffer);
 			KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 			return (RSAPrivateKey) keyFactory.generatePrivate(keySpec);
@@ -126,10 +129,11 @@ public class RSAEncrypt {
 		}
 		Cipher cipher = null;
 		try {
-			// 使用默认RSA
+			// 使用RSA实例化cipher对象
 			cipher = Cipher.getInstance("RSA");
-			// cipher= Cipher.getInstance("RSA", new BouncyCastleProvider());
+			// 初始化cipher，传入的是加密模式和公钥
 			cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+			// 定义输入明文的长度
 			int inputLen = plainTextData.length;
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			int offset = 0;
@@ -138,6 +142,7 @@ public class RSAEncrypt {
 			//分段加密
 			while(inputLen - offset > 0){
 				if(inputLen - offset > 117){
+					//加密的结果被字节数组cache接收
 					cache = cipher.doFinal(plainTextData, offset,117);
 				}else{
 					cache = cipher.doFinal(plainTextData, offset, inputLen - offset);
@@ -172,6 +177,7 @@ public class RSAEncrypt {
 		}
 		Cipher cipher = null;
 		try {
+			// 使用RSA实例化cipher对象
 			cipher = Cipher.getInstance("RSA");
 			cipher.init(Cipher.DECRYPT_MODE, publicKey);
 			int inputLen = cipherData.length;
@@ -216,7 +222,7 @@ public class RSAEncrypt {
 		}
 		Cipher cipher = null;
 		try {
-			// 使用默认RSA
+			// 使用RSA实例化cipher对象
 			cipher = Cipher.getInstance("RSA");
 			cipher.init(Cipher.ENCRYPT_MODE, privateKey);
 			int inputLen = plainTextData.length;
@@ -261,6 +267,7 @@ public class RSAEncrypt {
 		}
 		Cipher cipher = null;
 		try {
+			// 使用RSA实例化cipher对象
 			cipher = Cipher.getInstance("RSA");
 			cipher.init(Cipher.DECRYPT_MODE, privateKey);
 			int inputLen = cipherData.length;
